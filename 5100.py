@@ -26,6 +26,7 @@ class timer(threading.Thread):
             strList.addLine("thermal:"+tempurature)
             strList.addLine(cpu)
             strList.addLine(mem)
+            strList.addLine(getUpTime())
             #nokia.text(ipAdd+" thermal:"+tempurature+" "+cpu+"     "+mem)
             nokia.text(strList.outStr())
             time.sleep(self.interval)
@@ -92,6 +93,10 @@ def getMem():
         str(int(phymem.total / 1024 / 1024)) + "M"  
     )
     return line
+
+def getUpTime():
+    time = commands.getstatusoutput("uptime|awk -F',' '{print $1}'|awk '{print $3}'")[1]
+    return time
 
 if __name__=="__main__":
     nokia = nokiaSPI.NokiaSPI(contrast=0xb6)
