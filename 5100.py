@@ -22,7 +22,7 @@ class timer(threading.Thread):
             cpu = getCpuUseage()
             mem = getMem()
             strList = strContainer(0,14,6)
-            strList.addLine(ipAdd)
+            strList.handelLines(ipAdd)
             strList.addLine("thermal:"+tempurature)
             strList.addLine(cpu)
             strList.addLine(mem)
@@ -64,6 +64,12 @@ class strContainer():
             endindex = start+self.screenLineCount*self.eachLineCharCount if start+self.screenLineCount*self.eachLineCharCount <= len(self.str) else len(self.str)
             return self.str[start*self.eachLineCharCount:endindex]
 
+    def handelLines(self,str):
+        if str.find('\n'):
+            for s in str.split('\n'):
+                self.addLine(s)
+        else:
+            self.addLine(str)
 def getIp():
     ipAdd = commands.getstatusoutput("ifconfig|grep '192.168*'|awk '{print $2}'|awk -F':' '{print $2}'")[1]
     return ipAdd

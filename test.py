@@ -30,8 +30,13 @@ class strContainer():
             endindex = start+self.screenLineCount*self.eachLineCharCount if start+self.screenLineCount*self.eachLineCharCount <= len(self.str) else len(self.str)
             return self.str[start*self.eachLineCharCount:endindex]
 
+    def handelLines(self,str):
+        if str.find('\n'):
+            for s in str.split('\n'):
+                self.addLine(s)
 if __name__=="__main__":
     container = strContainer(0,14,6)
+    container.handelLines('''192.168.2.5\n192.168.1.105''')
     container.addLine("xxxxxxxxxxxxxxx")
     container.addLine("vvvvvvvv")
     print container.outStr()
