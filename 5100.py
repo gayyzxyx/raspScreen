@@ -72,7 +72,7 @@ class strContainer():
         else:
             self.addLine(str)
 def getIp():
-    ipAdd = commands.getstatusoutput("ifconfig|grep '192.168*'|awk '{print $2}'|awk -F':' '{print $2}'")[1]
+    ipAdd = commands.getstatusoutput("ifconfig|grep 'inet addr:'|grep -v '127.0.0.1'|awk '{print $2}'")[1]
     return ipAdd
 
 def getTempurature():
