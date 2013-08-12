@@ -95,7 +95,12 @@ def getMem():
     return line
 
 def getUpTime():
-    time = commands.getstatusoutput("uptime|awk -F',' '{print $1}'|awk '{print $3}'")[1]
+    if commands.getstatusoutput("uptime")[1].find('day') > 0:
+        day = commands.getstatusoutput("uptime|awk -F',' '{print $1}'|awk '{print $3}'")[1]
+        hours = commands.getstatusoutput("uptime|awk -F',' '{print $2}'")[1]
+        return day + 'day '+ hours
+    else:
+        time = commands.getstatusoutput("uptime|awk -F',' '{print $1}'|awk '{print $3}'")[1]
     return time
 
 if __name__=="__main__":
