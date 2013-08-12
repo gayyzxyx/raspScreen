@@ -13,7 +13,7 @@ class timer(threading.Thread):
         self.thread_num = num  
         self.interval = interval  
         self.thread_stop = False
-        self.led = 'ON'
+        self.led = led
 
     def run(self):
         while not self.thread_stop:
