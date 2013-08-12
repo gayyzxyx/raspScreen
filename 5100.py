@@ -5,18 +5,21 @@ import nokiaSPI
 import commands
 import psutil
 import string
+import sys
 
 class timer(threading.Thread):
-    def __init__(self,num,interval):
+    def __init__(self,num,interval,led):
         threading.Thread.__init__(self)
         self.thread_num = num  
         self.interval = interval  
-        self.thread_stop = False  
+        self.thread_stop = False
+        self.led = 'ON'
 
     def run(self):
         while not self.thread_stop:
             nokia.cls()
-            nokia.led(0)
+            if self.led.lower() != 'on':
+                nokia.led(0)
             ipAdd = getIp()
             tempurature = getTempurature()
             cpu = getCpuUseage()
@@ -105,7 +108,7 @@ def getUpTime():
 
 if __name__=="__main__":
     nokia = nokiaSPI.NokiaSPI(contrast=0xb6)
-    thread1 = timer(1,5)
+    thread1 = timer(1,5,sys.argv[1])
     thread1.start()
 
         
