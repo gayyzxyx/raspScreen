@@ -87,6 +87,5 @@ def main():
     print '抓取完成'
 
 if __name__=='__main__':
-    #password = getpass.getpass('密码：')
     opener = login('gayyzxyx@126.com','q1w2e3p0o9i8.')
     play('-3',opener)
