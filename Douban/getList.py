@@ -8,6 +8,7 @@ import time
 import getopt
 import getpass
 from cookielib import CookieJar
+import subprocess
 
 def save(filename,content):
     file = open(filename,'wb')
@@ -33,6 +34,9 @@ def getPlatList(channel='0',opener = None):
     else:
         return json.loads(opener.open(urllib2.Request(url)).read())
 
+def notifyToDesktop(picture,title,content):
+    subprocess.call(['notify-send','-i',os.getcwd()+'/'+picture,title,content])
+
 def login(username,password):
     opener = urllib2.build_opener(urllib2.HTTPCookieProcessor(CookieJar()))
     print 'fetching code...'
@@ -54,6 +58,7 @@ def login(username,password):
     else:
         print 'login success'
         return opener
+
 def play(channel='0', opener=None):
     while True:
         if opener == None:
@@ -69,7 +74,11 @@ def play(channel='0', opener=None):
 
             save(picture,urllib.urlopen(song['picture']).read())
             print 'now playing'+song['title'].encode('utf8')
+            notifyToDesktop(picture,song['title'],song['artist']+'\n'+song['albumtitle'])
+            player = subprocess.Popen(['mplayer',song['url']])
             time.sleep(song['length'])
+            player.kill()
+
 def main():
     for i in range(0,2):
         get_music_json()
