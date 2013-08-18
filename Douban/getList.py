@@ -7,8 +7,32 @@ import json
 import time
 import getopt
 import getpass
+import signal
+import gtk
+import sys
 from cookielib import CookieJar
 import subprocess
+
+class Watcher:
+    def __init__(self):
+        self.child = os.fork()
+        if self.child == 0:
+            return
+        else:
+            self.watch()
+
+    def watch(self):
+        try:
+            os.wait()
+        except KeyboardInterrupt:
+            print 'KeyboardInterrupt'
+            self.kill()
+        sys.exit()
+
+    def kill(self):
+        try:
+            os.kill(self.child, signal.SIGKILL)
+        except OSError: pass
 
 def save(filename,content):
     file = open(filename,'wb')
@@ -76,6 +100,7 @@ def play(channel='0', opener=None):
             print 'now playing'+song['title'].encode('utf8')
             notifyToDesktop(picture,song['title'],song['artist']+'\n'+song['albumtitle'])
             player = subprocess.Popen(['mplayer',song['url']])
+            print 'pid:'+str(os.getpid())
             time.sleep(song['length'])
             player.kill()
 
